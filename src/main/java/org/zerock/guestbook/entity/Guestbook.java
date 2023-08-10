@@ -24,6 +24,14 @@ public class Guestbook {
     @Column(length = 50, nullable = false)
     private String writer;
 
+    public void changeTitle(String title){
+        this.title = title;
+    }
+
+    public void changeContent(String title){
+        this.content = content;
+    }
+
     @LastModifiedDate
     private LocalDateTime modDate;
 }
