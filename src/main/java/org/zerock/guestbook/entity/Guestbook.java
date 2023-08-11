@@ -12,8 +12,9 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @ToString
-// Setter,Getter x in Entity
-public class Guestbook {
+@Getter
+// Setter x in Entity
+public class Guestbook extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long gno;
@@ -24,14 +25,13 @@ public class Guestbook {
     @Column(length = 50, nullable = false)
     private String writer;
 
-    public void changeTitle(String title){
+    public void changeTitle(String title) {
         this.title = title;
     }
 
-    public void changeContent(String title){
+    public void changeContent(String content) {
         this.content = content;
     }
 
-    @LastModifiedDate
-    private LocalDateTime modDate;
+
 }
