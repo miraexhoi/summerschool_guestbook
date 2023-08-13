@@ -2,10 +2,11 @@ package org.zerock.guestbook.service;
 
 import org.zerock.guestbook.dto.GuestbookDTO;
 import org.zerock.guestbook.dto.PageRequestDTO;
+import org.zerock.guestbook.dto.PageResultDTO;
 import org.zerock.guestbook.entity.Guestbook;
 
 public interface GuestbookService {
-    void getList(PageRequestDTO dto);
+    PageResultDTO<GuestbookDTO,Guestbook> getList(PageRequestDTO dto);
 
     // C
     Long register(GuestbookDTO dto);

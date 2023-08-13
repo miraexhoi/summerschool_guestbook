@@ -9,10 +9,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.zerock.guestbook.dto.GuestbookDTO;
 import org.zerock.guestbook.dto.PageRequestDTO;
+import org.zerock.guestbook.dto.PageResultDTO;
 import org.zerock.guestbook.entity.Guestbook;
 import org.zerock.guestbook.repository.GuestbookRepository;
 
 import java.util.Optional;
+import java.util.function.Function;
 
 @Service
 @RequiredArgsConstructor
@@ -21,11 +23,12 @@ public class GuestbookServiceImpl implements GuestbookService {
     private final GuestbookRepository guestbookRepository;
 
     @Override
-    public void getList(PageRequestDTO dto) {
+    public PageResultDTO<GuestbookDTO, Guestbook> getList(PageRequestDTO dto) {
         Sort sort = Sort.by("gno").descending();
-        Page<Guestbook> result = guestbookRepository.findAll(dto
-                .getPageable(sort));
-        result.stream().forEach(guestbook -> System.out.println(guestbook));
+        Page<Guestbook> result = guestbookRepository.findAll(dto.getPageable(sort));
+        Function<Guestbook, GuestbookDTO> fn
+                = (entity -> entityToDTO(entity));
+        return new PageResultDTO<>(result, fn);
     }
 
     @Override
@@ -41,7 +44,7 @@ public class GuestbookServiceImpl implements GuestbookService {
     public GuestbookDTO read(Long gno) {
         Optional<Guestbook> result = guestbookRepository
                 .findById(gno);
-        return(result.isPresent())?entityToDTO(result.get()):null;
+        return (result.isPresent()) ? entityToDTO(result.get()) : null;
 //        if(result.isPresent()) {
 //            Guestbook guestbook = result.get();
 //            GuestbookDTO guestbookDTO = entityToDTO(guestbook);
@@ -52,7 +55,7 @@ public class GuestbookServiceImpl implements GuestbookService {
     @Override
     public void modify(GuestbookDTO dto) {
         Optional<Guestbook> result = guestbookRepository.findById(dto.getGno());
-        if(result.isPresent()) {
+        if (result.isPresent()) {
             Guestbook guestbook = result.get();
             guestbook.changeTitle(dto.getTitle());
             guestbook.changeContent(dto.getContent());
