@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.zerock.guestbook.dto.GuestbookDTO;
 import org.zerock.guestbook.dto.PageRequestDTO;
+import org.zerock.guestbook.dto.PageResultDTO;
+import org.zerock.guestbook.entity.Guestbook;
 
 @SpringBootTest
 class GuestbookServiceTests {
@@ -44,8 +46,11 @@ class GuestbookServiceTests {
 
     @Test
     public void testGetList() {
-        PageRequestDTO pageRequestDTO = new PageRequestDTO(2,10);
-        service.getList(pageRequestDTO);
+        PageRequestDTO pageRequestDTO = new
+                PageRequestDTO(1,10);
+        PageResultDTO<GuestbookDTO, Guestbook> list =
+                service.getList(pageRequestDTO);
+        System.out.println(list);
     }
 
 }
